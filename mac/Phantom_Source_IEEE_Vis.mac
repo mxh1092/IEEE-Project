@@ -1,0 +1,158 @@
+###  P H A N T O M S ###
+
+
+/gate/world/daughters/name                 tube1
+/gate/world/daughters/insert               cylinder
+/gate/tube1/geometry/setRmin                 0 mm
+/gate/tube1/geometry/setRmax                 80 mm
+/gate/tube1/geometry/setHeight               1200 mm
+#/gate/tube1/geometry/setPhiStart			   270 deg
+#/gate/tube1/geometry/setDeltaPhi			   180 deg
+/gate/tube1/placement/setRotationAxis        1 0 0
+/gate/tube1/placement/setRotationAngle       -15 deg
+/gate/tube1/placement/setTranslation         0 0 0  mm
+/gate/tube1/vis/forceSolid
+/gate/tube1/vis/setVisible                   0
+/gate/tube1/setMaterial                      Air
+/gate/tube1/vis/setColor                     white
+/gate/geometry/rebuild
+/vis/viewer/update
+
+
+/gate/tube1/daughters/name                  shell
+/gate/tube1/daughters/insert                cylinder
+/gate/shell/geometry/setRmin               75 mm
+/gate/shell/geometry/setRmax               80 mm
+/gate/shell/geometry/setHeight             1200 mm
+/gate/shell/placement/setTranslation       0 0 0  mm
+#/gate/shell/geometry/setPhiStart			   270 deg
+#/gate/shell/geometry/setDeltaPhi			   180 deg
+/gate/shell/setMaterial                         Aluminium
+/gate/shell/vis/setColor                    gray
+/gate/shell/vis/forceSolid
+/gate/shell/vis/setVisible                 1
+/gate/geometry/rebuild
+/vis/viewer/update
+
+
+/gate/tube1/daughters/name                  water
+/gate/tube1/daughters/insert                cylinder
+/gate/water/geometry/setRmin               25 mm
+/gate/water/geometry/setRmax               75 mm
+/gate/water/geometry/setHeight             1200 mm
+/gate/water/placement/setTranslation       0 0 0  mm
+#/gate/water/geometry/setPhiStart			   270 deg
+#/gate/water/geometry/setDeltaPhi			   180 deg
+/gate/water/setMaterial                         Water
+/gate/water/vis/forceSolid
+/gate/water/vis/setVisible                 1
+/gate/water/vis/setColor                    cyan
+/gate/geometry/rebuild
+/vis/viewer/update
+
+/gate/tube1/daughters/name                  inner
+/gate/tube1/daughters/insert                cylinder
+/gate/inner/geometry/setRmin               20 mm
+/gate/inner/geometry/setRmax               25 mm
+/gate/inner/geometry/setHeight             1200 mm
+/gate/inner/placement/setTranslation       0 0 0  mm
+#/gate/inner/geometry/setPhiStart			   270 deg
+#/gate/inner/geometry/setDeltaPhi			   180 deg
+/gate/inner/setMaterial                         Aluminium
+/gate/inner/vis/setColor                gray
+/gate/inner/vis/forceSolid
+/gate/inner/vis/setVisible                 1
+/gate/geometry/rebuild
+/vis/viewer/update
+
+
+
+
+### S O U R C E     D E F I N I T I O N ###
+
+/gate/water/daughters/name                      Source1
+/gate/water/daughters/insert                    sphere
+/gate/Source1/setMaterial                Glass
+/gate/Source1/vis/forceWireframe
+/gate/Source1/vis/setColor               white
+/gate/Source1/vis/setVisible             1
+
+/gate/Source1/geometry/setRmin           0 mm
+/gate/Source1/geometry/setRmax           10 mm
+/gate/Source1/geometry/setPhiStart       0 deg
+/gate/Source1/geometry/setDeltaPhi       360 deg
+/gate/Source1/geometry/setThetaStart     0 deg
+/gate/Source1/geometry/setDeltaTheta     360 deg
+#/gate/Source1/placement/setTranslation   0 50 0 mm
+
+/gate/Source1/moves/insert                       genericMove
+/gate/Source1/genericMove/setPlacementsFilename  data/IEEE-helix.placements
+
+/gate/geometry/rebuild
+/vis/viewer/update
+
+
+#=====================================================
+# INITIALISATION
+#=====================================================
+
+/gate/run/initialize
+
+
+
+### S O U R C E    D E F I N I T I O N ###
+
+# F A S T   P R O D U C T I O N   M O D U L E   F O R   F - 1 8   I S O T O P E S
+/gate/source/addSource F18_Source
+/gate/source/F18_Source/setActivity 10 MBq
+/gate/source/F18_Source/gps/particle e+
+/gate/source/F18_Source/setForcedUnstableFlag true
+/gate/source/F18_Source/setForcedHalfLife 6586 s
+/gate/source/F18_Source/gps/energytype Fluor18
+
+/gate/source/F18_Source/gps/type Volume
+/gate/source/F18_Source/gps/shape Sphere
+/gate/source/F18_Source/gps/radius 0.5 mm
+/gate/source/F18_Source/gps/angtype iso
+/gate/source/F18_Source/gps/centre 0.0 0.0 0.0 mm
+
+
+/gate/source/F18_Source/attachTo     Source1
+
+/gate/source/list
+
+#/vis/viewer/set/viewpointThetaPhi -80 -10
+/vis/viewer/set/targetPoint 0 0 0 mm
+
+
+#-------------------oooooOOOOO00000OOOOOooooo---------------------#
+#                                                                 #
+#                   D E F I N I T I O N   O F                     #
+#                Y O U R   O U T P U T   F I L E                  #
+#                                                                 #
+#-------------------oooooOOOOO00000OOOOOooooo---------------------#
+
+
+#=====================================================
+#  D A T A   O U T P U T   
+#=====================================================
+
+/gate/random/setEngineSeed auto
+
+#/gate/output/root/enable
+#/gate/output/root/setFileName               output/Test
+#/gate/output/root/setRootNtupleFlag         0
+#/gate/output/root/setRootHitFlag            0
+#/gate/output/root/setRootSinglesFlag        1
+#/gate/output/root/setRootCoincidencesFlag   1
+#/gate/output/root/setRootdelayFlag          0
+
+/gate/output/ascii/enable
+/gate/output/ascii/setFileName                    output/Test
+/gate/output/ascii/setOutFileHitsFlag           0
+/gate/output/ascii/setOutFileSinglesFlag        0
+/gate/output/ascii/setOutFileEWindowFlag        0
+/gate/output/ascii/setOutFileCoincidencesFlag   1
+/gate/output/ascii/setCoincidenceMask 0 0 0 0 0 0 1 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 
+
+
